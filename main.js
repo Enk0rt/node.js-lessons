@@ -26,9 +26,8 @@ app.get('/users/:id', async (req,res)=>{
 
 app.patch('/users/:id', async (req,res)=>{
     const id = req.params.id
-    const query = req.query
-    const data = await userService.update(id,query)
-    console.log(query)
+    const updateData = req.body
+    const data = await userService.update(id,updateData)
     return res.json(data)
 })
 
