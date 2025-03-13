@@ -1,53 +1,41 @@
-import express, {Request,Response} from "express"
+import express from "express"
 import * as mongoose from "mongoose";
-import {userService} from "./services/user.service";
-import {IUserDTO} from "./interfaces/user.interface";
+import {config} from "./configs/config";
+import {apiRouter} from "./routers/api.router";
 
 const app = express()
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({extended: true}))
 
-app.get("/users",async (req:Request,res:Response)=>{
-    const data = await userService.getAll()
-    res.json(data)
-})
+app.use('/',apiRouter)
 
-app.post("/users",async (req:Request,res:Response)=>{
-    const user = req.body as IUserDTO
-    const data = await userService.create(user)
-    res.json(data)
-})
-app.get("/users/:id",async (req:Request,res:Response)=>{
-    const {id} = req.params
-    const data = await userService.getById(id)
-    res.json(data)
-})
 
-const dbConnection =  async () => {
+const dbConnection = async () => {
     let dbCon = false
 
-    while(!dbCon){
-        try{
+    while (!dbCon) {
+        try {
             console.log("Connecting to DB...")
-            await mongoose.connect('mongodb+srv://admin:admin@nodejs-lessons-cluster.4aylm.mongodb.net/nodejs-express-mongo-db')
+            await mongoose.connect(config.MONGO_URI)
             dbCon = true
             console.log("Data Base available!")
-        }catch (e){
+        } catch (e) {
             console.log("Data Base unavailable, wait 3 sec")
-            await new Promise(resolve => setTimeout(resolve,3000))
+            await new Promise(resolve => setTimeout(resolve, 3000))
         }
     }
 }
 
-const start = async ()=>{
-    try{
+const start = async () => {
+    try {
         await dbConnection()
-        app.listen(2222,()=>{
-            console.log("Server listening on 2222")
+        app.listen(config.PORT, () => {
+            console.log(`Server listening on ${config.PORT}`)
         })
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
+
 }
 
 start()

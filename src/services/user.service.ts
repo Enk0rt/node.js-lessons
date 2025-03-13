@@ -11,6 +11,16 @@ class UserService {
     public getById(userId:string):Promise<IUser>{
         return userRepository.getById(userId)
     }
+    public async updateById(id:string,updateData:IUserDTO){
+        await userRepository.updateById(id,updateData)
+        return userRepository.getById(id)
+    }
+    public deleteById(id:string){
+        return userRepository.deleteById(id)
+    }
+    public deleteAll(){
+        return userRepository.deleteAll()
+    }
 }
 
 export const userService = new UserService()
