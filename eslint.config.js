@@ -1,35 +1,37 @@
-import js from "@eslint/js"
-import tsParser from "@typescript-eslint/parser"
-import tsPlugin from "@typescript-eslint/eslint-plugin"
-import prettierPlugin from "eslint-plugin-prettier"
-import importPlugin from "eslint-plugin-import"
+import js from "@eslint/js";
+import tsParser from "@typescript-eslint/parser";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import prettierPlugin from "eslint-plugin-prettier";
+import importPlugin from "eslint-plugin-import";
+import importSortPlugin from "eslint-plugin-simple-import-sort";
 
 export default [
     {
         files: ["**/*.ts"],
         ignores: ["eslint.config.js", "dist/**"],
-        languageOptions:{
+        languageOptions: {
             ecmaVersion: "latest",
-            sourceType:"module",
-            parser:tsParser,
-            parserOptions:{
-                project:"./tsconfig.json",
+            sourceType: "module",
+            parser: tsParser,
+            parserOptions: {
+                project: "./tsconfig.json",
                 tsconfigRootDir: process.cwd(),
             },
-            globals:{
+            globals: {
                 process: "readonly",
                 __dirname: "readonly",
-                module:"readonly",
+                module: "readonly",
                 console: "readonly",
-                setTimeout:"readonly",
-            }
+                setTimeout: "readonly",
+            },
         },
-        plugins:{
+        plugins: {
             "@typescript-eslint": tsPlugin,
             prettier: prettierPlugin,
-            import: importPlugin
+            import: importPlugin,
+            "simple-import-sort": importSortPlugin,
         },
-        rules:{
+        rules: {
             ...js.configs.recommended.rules,
             ...tsPlugin.configs.recommended.rules,
             ...prettierPlugin.configs.recommended.rules,
@@ -47,6 +49,6 @@ export default [
             "import/no-duplicates": "error",
             "prettier/prettier": ["error"],
             "no-console": "warn",
-        }
-    }
-]
+        },
+    },
+];

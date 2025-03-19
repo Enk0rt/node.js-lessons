@@ -1,11 +1,10 @@
-import dotenv from 'dotenv'
-dotenv.config()
+import dotenv from "dotenv";
 
-const config ={
-    PORT:process.env.PORT,
-    MONGO_URI:process.env.MONGO_URI
-}
+dotenv.config();
 
-export {
-    config
-}
+const config = {
+    PORT: process.env.PORT,
+    MONGO_URI: process.env.MONGO_URI,
+};
+
+export { config };
