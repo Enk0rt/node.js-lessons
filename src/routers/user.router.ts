@@ -14,11 +14,20 @@ router.post(
     userController.create,
 );
 
-router.get("/:id", userController.getById);
+router.get("/:id", commonMiddleware.isValidated("id"), userController.getById);
 
-router.patch("/:id", userController.updateById);
+router.patch(
+    "/:id",
+    commonMiddleware.isValidated("id"),
+    commonMiddleware.validateBody(UserValidator.update),
+    userController.updateById,
+);
 
-router.delete("/:id", userController.deleteById);
+router.delete(
+    "/:id",
+    commonMiddleware.isValidated("id"),
+    userController.deleteById,
+);
 
 router.delete("/", userController.deleteAll);
 

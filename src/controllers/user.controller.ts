@@ -34,8 +34,8 @@ class UserController {
     }
 
     public async deleteAll(req: Request, res: Response) {
-        await userService.deleteAll();
-        res.status(StatusCodesEnum.NO_CONTENT);
+        const data = await userService.deleteAll();
+        res.status(StatusCodesEnum.NO_CONTENT).json(data);
     }
 
     public async deleteById(req: Request, res: Response) {
