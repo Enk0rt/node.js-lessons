@@ -1,10 +1,24 @@
-export interface IUser {
+import { RoleEnum } from "../enums/role.enum";
+import { BaseInterface } from "./base.interface";
+
+interface IUser extends BaseInterface {
     _id: string;
+    email: string;
+    password: string;
+    role: RoleEnum;
+    isActive: boolean;
+    isDeleted: boolean;
+    isVarified: boolean;
     name: string;
     surname: string;
     age: number;
-    createdAt: Date;
-    updatedAt: Date;
 }
 
-export type IUserDTO = Pick<IUser, "name" | "surname" | "age">;
+type IUserCreateDTO = Pick<
+    IUser,
+    "email" | "password" | "name" | "surname" | "age"
+>;
+
+type IUserUpdateDTO = Pick<IUser, "name" | "surname" | "age">;
+
+export type { IUser, IUserCreateDTO, IUserUpdateDTO };

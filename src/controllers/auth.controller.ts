@@ -1,0 +1,65 @@
+import { NextFunction, Request, Response } from "express";
+
+import { StatusCodesEnum } from "../enums/status-codes.enums";
+import { ApiError } from "../errors/api.errors";
+import { AuthInterface } from "../interfaces/auth.interface";
+import { ITokenPayload } from "../interfaces/token.interface";
+import { IUserCreateDTO } from "../interfaces/user.interface";
+import { tokenRepository } from "../repositories/token.repository";
+import { authService } from "../services/auth.service";
+import { tokenService } from "../services/token.service";
+import { userService } from "../services/user.service";
+
+class AuthController {
+    public async signUp(req: Request, res: Response, next: NextFunction) {
+        try {
+            const body = req.body as IUserCreateDTO;
+            const data = await authService.signUp(body);
+            res.status(StatusCodesEnum.CREATED).json(data);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async signIn(req: Request, res: Response, next: NextFunction) {
+        try {
+            const dto = req.body as AuthInterface;
+            const data = await authService.signIn(dto);
+            res.status(StatusCodesEnum.OK).json(data);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async me(req: Request, res: Response, next: NextFunction) {
+        try {
+            const tokenPayload = req.res.locals.tokenPayload as ITokenPayload;
+            const { userId } = tokenPayload;
+            const user = await userService.getById(userId);
+            res.status(StatusCodesEnum.OK).json(user);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (e) {
+            throw new ApiError(
+                "User is not singed in",
+                StatusCodesEnum.UNAUTHORIZED,
+            );
+        }
+    }
+
+    public async refresh(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { role, userId } = req.res.locals
+                .tokenPayload as ITokenPayload;
+            const tokens = tokenService.generateTokens({ role, userId });
+            await tokenRepository.create({
+                ...tokens,
+                _userId: userId,
+            });
+            res.status(StatusCodesEnum.OK).json(tokens);
+        } catch (e) {
+            next(e);
+        }
+    }
+}
+
+export const authController = new AuthController();

@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { userController } from "../controllers/user.controller";
+import { authMiddleware } from "../middleware/auth.middleware";
 import { commonMiddleware } from "../middleware/common.middleware";
 import { UserValidator } from "../validators/user.validator";
 
@@ -8,16 +9,11 @@ const router = Router();
 
 router.get("/", userController.getAll);
 
-router.post(
-    "/",
-    commonMiddleware.validateBody(UserValidator.create),
-    userController.create,
-);
-
 router.get("/:id", commonMiddleware.isValidated("id"), userController.getById);
 
 router.patch(
     "/:id",
+    authMiddleware.checkAccessToken,
     commonMiddleware.isValidated("id"),
     commonMiddleware.validateBody(UserValidator.update),
     userController.updateById,
@@ -25,10 +21,24 @@ router.patch(
 
 router.delete(
     "/:id",
+    authMiddleware.checkAccessToken,
     commonMiddleware.isValidated("id"),
     userController.deleteById,
 );
 
 router.delete("/", userController.deleteAll);
+
+router.patch(
+    "/:id/block",
+    authMiddleware.checkAccessToken,
+    authMiddleware.isAdmin,
+    userController.blockUser,
+);
+router.patch(
+    "/:id/unblock",
+    authMiddleware.checkAccessToken,
+    authMiddleware.isAdmin,
+    userController.unBlockUser,
+);
 
 export const userRouter = router;
