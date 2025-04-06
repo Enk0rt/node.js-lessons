@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { RoleEnum } from "../enums/role.enum";
 import { StatusCodesEnum } from "../enums/status-codes.enums";
+import { TokenTypeEnum } from "../enums/token-type.enum";
 import { ApiError } from "../errors/api.errors";
 import { ITokenPayload } from "../interfaces/token.interface";
 import { tokenService } from "../services/token.service";
@@ -27,7 +28,7 @@ class AuthMiddleware {
 
             const tokenPayload = tokenService.verifyToken(
                 accessToken,
-                "access",
+                TokenTypeEnum.ACCESS,
             );
 
             if (!accessToken) {
@@ -39,7 +40,7 @@ class AuthMiddleware {
 
             const isTokenExists = await tokenService.isExists(
                 accessToken,
-                "accessToken",
+                TokenTypeEnum.ACCESS,
             );
 
             if (!isTokenExists) {
@@ -82,12 +83,12 @@ class AuthMiddleware {
 
             const tokenPayload = tokenService.verifyToken(
                 refreshToken,
-                "refresh",
+                TokenTypeEnum.REFRESH,
             );
 
             const isTokenExists = await tokenService.isExists(
                 refreshToken,
-                "refreshToken",
+                TokenTypeEnum.REFRESH,
             );
 
             if (!isTokenExists) {

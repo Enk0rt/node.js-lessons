@@ -1,0 +1,17 @@
+.wrapper{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.header{
+    height: 50px;
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+.text{
+    font-size: 80px;
+    font-weight: bold;
+}

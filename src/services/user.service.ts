@@ -1,6 +1,6 @@
 import { StatusCodesEnum } from "../enums/status-codes.enums";
 import { ApiError } from "../errors/api.errors";
-import { IUser, IUserUpdateDTO } from "../interfaces/user.interface";
+import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
 
 class UserService {
@@ -16,7 +16,14 @@ class UserService {
         return user;
     }
 
-    public async updateById(id: string, updateData: IUserUpdateDTO) {
+    public getByEmail(email: string): Promise<IUser> {
+        return userRepository.getByEmail(email);
+    }
+
+    public async updateById(
+        id: string,
+        updateData: Partial<IUser>,
+    ): Promise<IUser> {
         const user = await userRepository.updateById(id, updateData);
         if (!user) {
             throw new ApiError("User not fount", StatusCodesEnum.NOT_FOUND);
