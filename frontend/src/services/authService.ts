@@ -33,8 +33,8 @@ export const authService = {
         localStorage.setItem(_refreshToken, refreshToken);
     },
     deleteTokens():void{
-       localStorage.getItem(_accessToken) ;
-       localStorage.getItem(_refreshToken);
+       localStorage.delete(_accessToken) ;
+       localStorage.delete(_refreshToken);
 
     },
     getAccessToken(): string {
