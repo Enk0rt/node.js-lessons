@@ -1,11 +1,9 @@
 import joi from "joi";
 
-import { RegexEnum } from "../enums/regex.enum";
-
 export class PizzaValidator {
-    private static name = joi.string().trim();
-    private static price = joi.string().regex(RegexEnum.PASSWORD);
-    private static diameter = joi.string().regex(RegexEnum.PASSWORD);
+    private static name = joi.string().min(2).max(255).trim();
+    private static price = joi.number().min(1).max(1_000_000);
+    private static diameter = joi.number().min(1).max(255);
 
     public static createPizza = joi.object({
         name: this.name.required(),

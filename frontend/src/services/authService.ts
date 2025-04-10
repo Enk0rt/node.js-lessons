@@ -12,27 +12,41 @@ export const authService = {
     register(user: IAuth): IResponse<IUser> {
         return apiService.post(urls.auth.register, user);
     },
+
     async login(user: IAuth): Promise<IUser> {
         const { data } = await apiService.post<ITokens>(urls.auth.login, user);
         this.setTokens(data);
-        return await this.me();
+        const {data:me} = await this.me()
+        return me;
     },
 
-    setTokens({tokens :{ accessToken, refreshToken }}: ITokens) {
+    async refresh():Promise<void> {
+        const refreshToken = this.getRefreshToken();
+        if (refreshToken) {
+            const { data } = await apiService.post<ITokens>(urls.auth.refresh, { refreshToken });
+            this.setTokens(data);
+        }
+    },
+
+    setTokens({ tokens: { accessToken, refreshToken } }: ITokens) {
         localStorage.setItem(_accessToken, accessToken);
         localStorage.setItem(_refreshToken, refreshToken);
     },
+    deleteTokens():void{
+       localStorage.getItem(_accessToken) ;
+       localStorage.getItem(_refreshToken);
 
-    getAccessToken():string{
-       return localStorage.getItem(_accessToken) || ''
+    },
+    getAccessToken(): string {
+        return localStorage.getItem(_accessToken) || "";
     },
 
-    getRefreshToken():string{
-        return localStorage.getItem(_refreshToken) || ''
+    getRefreshToken(): string {
+        return localStorage.getItem(_refreshToken) || "";
     },
 
-    me(): Promise<IUser> {
-        return apiService(urls.auth.me);
+    me():IResponse<IUser>  {
+     return apiService.get(urls.auth.me);
     },
 
 };

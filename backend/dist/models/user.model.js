@@ -18,5 +18,11 @@ const userSchema = new Schema({
 }, {
     timestamps: true,
     versionKey: false,
+    toJSON: {
+        transform: (doc, ret) => {
+            delete ret.password;
+            return ret;
+        },
+    },
 });
 export const User = model("user", userSchema);

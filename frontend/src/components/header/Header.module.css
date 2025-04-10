@@ -1,0 +1,14 @@
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+    height: 50px;
+}
+
+.header__link{
+    text-decoration: none;
+    color: snow;
+    font-size: 25px;
+    padding: 0 10px;
+}

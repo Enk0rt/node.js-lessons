@@ -3,7 +3,7 @@ import { RegexEnum } from "../enums/regex.enum";
 export class UserValidator {
     static email = joi.string().email().trim();
     static password = joi.string().regex(RegexEnum.PASSWORD);
-    static name = joi.string().min(3).max(10).trim();
+    static name = joi.string().regex(RegexEnum.NAME);
     static surname = joi.string().regex(RegexEnum.NAME);
     static age = joi.number().min(2).max(100);
     static create = joi.object({
