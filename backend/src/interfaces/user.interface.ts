@@ -6,6 +6,7 @@ interface IUser extends BaseInterface {
     email: string;
     password: string;
     role: RoleEnum;
+    avatar: string;
     isActive: boolean;
     isDeleted: boolean;
     isVarified: boolean;
