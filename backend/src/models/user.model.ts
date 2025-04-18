@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import { model, Schema } from "mongoose";
 
 import { RoleEnum } from "../enums/role.enum";
@@ -16,7 +18,7 @@ const userSchema = new Schema(
         name: { type: String, required: true },
         surname: { type: String, required: true },
         age: { type: Number, required: true },
-        avatar: { type: Number, default: "" },
+        avatar: { type: String, default: "" },
         isActive: { type: Boolean, default: false },
         isDeleted: { type: Boolean, default: false },
         isVarified: { type: Boolean, default: false },
@@ -27,6 +29,9 @@ const userSchema = new Schema(
         toJSON: {
             transform: (doc, ret) => {
                 delete ret.password;
+                if (ret.avatar) {
+                    ret.avatar = `/media/${path.basename(ret.avatar)}`;
+                }
                 return ret;
             },
         },
