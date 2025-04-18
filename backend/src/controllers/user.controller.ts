@@ -87,17 +87,20 @@ class UserController {
         try {
             const { id } = req.params;
             const user = await userService.getById(id);
+
             if (!user) {
-                throw new ApiError("User not found", StatusCodesEnum.NOT_FOUND);
+                throw new ApiError(
+                    "User not found",
+                    StatusCodesEnum.BAD_REQUEST,
+                );
             }
 
             if (!req.file) {
                 throw new ApiError(
-                    "File is not uploaded",
-                    StatusCodesEnum.NOT_FOUND,
+                    "No file uploaded",
+                    StatusCodesEnum.BAD_REQUEST,
                 );
             }
-
             const data = await userService.updateById(id, {
                 avatar: req.file.path,
             });

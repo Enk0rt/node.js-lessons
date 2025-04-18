@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(process.cwd(), "upload"));
     },
-    filename(req, file, cb) {
+    filename: (req, file, cb) => {
         const uniqueSuffix = v6();
         const ext = path.extname(file.originalname);
         cb(null, `${uniqueSuffix}${ext}`);
@@ -19,25 +19,26 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
     const allowedTypes = /.jpeg|.jpg|.png|.gif/;
-    const extName = allowedTypes.test(
-        path.extname(file.originalName).toLowerCase(),
+    const extname = allowedTypes.test(
+        path.extname(file.originalname).toLowerCase(),
     );
-    const mineType = allowedTypes.test(file.mimeType);
+    const minetype = allowedTypes.test(file.mimetype);
 
-    if (extName && mineType) {
+    if (extname && minetype) {
         return cb(null, true);
-    } else {
+    } else
         cb(
             new ApiError(
                 "Only images are allowed",
                 StatusCodesEnum.BAD_REQUEST,
             ),
         );
-    }
 };
 
-export const upload = multer({
+const upload = multer({
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 },
+    limits: { fileSize: 5 * 1024 * 1024 }, //5mb
     fileFilter: fileFilter,
 });
+
+export { upload };
