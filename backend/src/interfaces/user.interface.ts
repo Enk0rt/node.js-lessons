@@ -9,7 +9,7 @@ interface IUser extends BaseInterface {
     avatar: string;
     isActive: boolean;
     isDeleted: boolean;
-    isVarified: boolean;
+    isVerified: boolean;
     name: string;
     surname: string;
     age: number;

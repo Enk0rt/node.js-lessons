@@ -19,8 +19,11 @@ class UserRepository {
             ];
         }
         return Promise.all([
-            User.find(filterObject).limit(query.pageSize).skip(skip),
-            User.countDocuments(),
+            User.find(filterObject)
+                .limit(query.pageSize)
+                .skip(skip)
+                .sort(query.order),
+            User.find(filterObject).countDocuments(),
         ]);
     }
 
@@ -35,9 +38,11 @@ class UserRepository {
     public updateById(id: string, update: Partial<IUser>): Promise<IUser> {
         return User.findByIdAndUpdate(id, { ...update, updatedAt: Date.now() });
     }
+
     public deleteById(id: string) {
         return User.findByIdAndDelete(id);
     }
+
     public deleteAll() {
         return User.deleteMany();
     }

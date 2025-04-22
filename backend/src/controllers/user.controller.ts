@@ -11,7 +11,7 @@ class UserController {
         try {
             const query = req.query as any as IUserQuery;
             const data = await userService.getAll(query);
-            res.json(data);
+            res.status(StatusCodesEnum.OK).json(data);
         } catch (e) {
             next(e);
         }
