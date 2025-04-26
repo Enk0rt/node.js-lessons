@@ -4,6 +4,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/..">
       <excludeFolder url="file://$MODULE_DIR$/../dist" />
+      <excludeFolder url="file://$MODULE_DIR$/../mongo_db" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

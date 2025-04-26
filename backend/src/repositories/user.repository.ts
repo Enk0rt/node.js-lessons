@@ -8,7 +8,7 @@ import {
 import { User } from "../models/user.model";
 
 class UserRepository {
-    public getAll(query: IUserQuery): Promise<[IUser[], number]> {
+    public getAll(query?: IUserQuery): Promise<[IUser[], number]> {
         const skip = query.pageSize * (query.page - 1);
         const filterObject: FilterQuery<IUser> = { isDeleted: false };
 
